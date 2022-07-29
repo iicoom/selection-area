@@ -9,9 +9,9 @@ const updateTouch = 'touchmove';
 const endTouch = 'touchend';
 
 /**
- * SelectionArea class listen mouse movements to create and adapt a selection 
- * area checking if intersects with any target child element and returns the 
- * content of defined property of that childs. 
+ * SelectionArea class listen mouse movements to create and adapt a selection
+ * area checking if intersects with any target child element and returns the
+ * content of defined property of that childs.
  * @param  {Object} config Config object
  * @param  {Element} config.container DOM Element to make selectable
  * @param  {string} [config.area='selectionArea'] DOM ID for selection area to define styles
@@ -19,14 +19,14 @@ const endTouch = 'touchend';
  * @param  {Object} [config.area.class] DOM class for selection area to define styles
  * @param  {String} config.targets DOM selector of selectables childs
  * @param  {Array} config.targets List of selectable childs DOM selectors
- * @param  {boolean} [config.touchable=false] Listen to touch instead mouse 
+ * @param  {boolean} [config.touchable=false] Listen to touch instead mouse
  * events, default `false`
- * @param  {boolean} [config.autostart=false] Control autostart selection area 
+ * @param  {boolean} [config.autostart=false] Control autostart selection area
  * events, default `false`
  * @param  {function} [config.callback] Function to call when selection ends
- * @example 
+ * @example
  * import { SelectionArea } from 'selection-area';
- * 
+ *
  * let config = {
  *     container: document.querySelector('.parent'),
  *     area: 'areaElemId' || {
@@ -41,14 +41,14 @@ const endTouch = 'touchend';
  *         else console.log(selection);
  *     }
  * }
- * 
+ *
  * let selectable = new SelectionArea(config);
  * @class
  */
 class SelectionArea {
     constructor(config) {
         let validate = new Validate(config);
-        
+
         try {
             this.container = validate.container(config);
             this.targets = validate.targets(config);
@@ -62,7 +62,7 @@ class SelectionArea {
 
         if (this.autostart) this.start();
     }
-    
+
     /**
      * Function stores user callback to invoke it when selection ends.
      * @param  {function} callback Function defined as callback by user
@@ -70,7 +70,7 @@ class SelectionArea {
     onSelect(callback) {
         if (typeof this.callback !== 'function') this.callback = callback;
     }
-    
+
     /**
      * start function attachs to container the listeners on defined triggers.
      */
@@ -102,21 +102,21 @@ class SelectionArea {
     }
 
     /**
-     * handleEvent extends JavaScript Event interface as custom functions 
+     * handleEvent extends JavaScript Event interface as custom functions
      * dispatcher getting current position considering touch events.
      * @param  {Event} e Event data
      * @ignore
      */
     handleEvent(e) {
         e.preventDefault();
-        
+
         let pos = this.touchable && e.targetTouches && e.targetTouches.length ? e.targetTouches[0] : e;
         let [ x, y ] = [ pos.pageX, pos.pageY ];
 
         switch (e.type) {
             case initMouse:
             case initTouch:
-                this.init(x, y);
+                this.init(x, y, e);
                 break;
             case updateMouse:
             case updateTouch:
@@ -129,22 +129,24 @@ class SelectionArea {
         }
     }
 
-    
+
     /**
-     * init funtion clears current selection, creates new area with ID provided 
+     * init funtion clears current selection, creates new area with ID provided
      * and instances it into current container.
      * @param  {number} [x] Current position on x axis
      * @param  {number} [y] Current position on y axis
      * @ignore
      */
-    init(x, y) {
-        this.selected = [];
-        this.area = new Area(this.areaAttributes, x, y);
-        this.area.instance(this.container);
+    init(x, y, e) {
+        if (e.button === 0) { // 只有鼠标左键会触发框选
+            this.selected = [];
+            this.area = new Area(this.areaAttributes, x, y);
+            this.area.instance(this.container);
+        }
     }
 
     /**
-     * update receives current position and updates current selection area with 
+     * update receives current position and updates current selection area with
      * that position, resizing area and moving it.
      * @param  {number} [x] Current position on x axis
      * @param  {number} [y] Current position on y axis

@@ -1,6 +1,6 @@
 {
-  "name": "selection-area",
-  "version": "1.2.0",
+  "name": "selection-leo",
+  "version": "0.0.1",
   "keywords": [
     "list",
     "items",
@@ -16,12 +16,12 @@
   ],
   "description": "Simple JavaScript mouse & touch seletion area to any DOM container element.",
   "main": "dist/selection-area.cjs.js",
-	"module": "dist/selection-area.esm.js",
-	"browser": "dist/selection-area.umd.js",
+  "module": "dist/selection-area.esm.js",
+  "browser": "dist/selection-area.umd.js",
   "scripts": {
     "build": "NODE_ENV=production rollup -c build/rollup.config.js",
-		"dev": "rollup -w -c build/rollup.config.js",
-		"start": "npm run dev"
+    "dev": "rollup -w -c build/rollup.config.js",
+    "start": "npm run dev"
   },
   "repository": {
     "type": "git",
