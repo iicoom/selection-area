@@ -108,7 +108,7 @@ class SelectionArea {
      * @ignore
      */
     handleEvent(e) {
-        // e.preventDefault();
+        e.preventDefault();
 
         let pos = this.touchable && e.targetTouches && e.targetTouches.length ? e.targetTouches[0] : e;
         let [ x, y ] = [ pos.pageX, pos.pageY ];
@@ -116,6 +116,7 @@ class SelectionArea {
         switch (e.type) {
             case initMouse:
             case initTouch:
+                if (['thumb','file_item','file_name'].includes(e.target.classList[0])) return
                 this.init(x, y, e);
                 break;
             case updateMouse:
