@@ -108,7 +108,7 @@ class SelectionArea {
      * @ignore
      */
     handleEvent(e) {
-        e.preventDefault();
+        // e.preventDefault();
 
         let pos = this.touchable && e.targetTouches && e.targetTouches.length ? e.targetTouches[0] : e;
         let [ x, y ] = [ pos.pageX, pos.pageY ];
